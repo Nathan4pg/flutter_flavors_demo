@@ -2,11 +2,11 @@
 
 A monorepo that builds two different applications. One app is the Simpsons Character Viewer, the other is The Wire Character Viewer.
 
-## Running the app locally
+## Running Different Flavors in VS Code
 
-To run the different variations of the app, be sure to go to the Run and Debug tab on the left in VS Code. There you can select the dropdown at the top and choose between "Launch simpsons" and "Launch the_wire".
+To run the different variations of the app, be sure to open VS Code > Run and Debug tab on the left in VS Code (Shift + CMD + D) > dropdown at the top. In said dropdwon you can choose between "Launch simpsons" and "Launch the_wire".
 
-### Run the apps via command line
+### Running Different Flavors in Terminal
 
 flutter run --target lib/main_simpsons.dart --flavor simpsons
 flutter run --target lib/main_the_wire.dart --flavor the_wire
