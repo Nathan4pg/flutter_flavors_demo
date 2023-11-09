@@ -39,55 +39,53 @@ class CharacterInfoState extends State<CharacterInfo> {
 
   @override
   Widget build(BuildContext context) {
+    const double setMaxWidth = 400;
     List<Map<String, dynamic>> loadingItems = [
       // character name
       {
         'type': 'square',
-        'width': '100%',
-        'height': 50,
+        'width': setMaxWidth,
+        'height': 40,
         'margin': [0, 8, 0, 16]
       },
       // character image
       {
         'type': 'square',
-        'width': 400,
-        'height': 400,
+        'width': setMaxWidth,
+        'height': setMaxWidth,
         'margin': [0, 0, 0, 24]
       },
       // description
       {
         'type': 'square',
-        'width': '100%',
+        'width': setMaxWidth,
         'height': 300,
         'margin': [0, 0, 0, 40]
       }
     ];
 
-    const double setMaxWidth = 400;
-
     return OrientationBuilder(
       builder: (context, orientation) {
         return Scaffold(
-          appBar: orientation == Orientation.portrait
+          appBar: MediaQuery.of(context).size.shortestSide < 600
               ? AppBar(
                   title: const Text('Character Info'),
                 )
               : null,
-          // No AppBar in landscape mode
           body: Consumer<CharacterInfoViewModel>(
             builder: (context, viewModel, child) {
               if (_isLoading) {
                 return SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
-                    child: LoadingSkeleton(items: loadingItems),
+                    child: Center(child: LoadingSkeleton(items: loadingItems)),
                   ),
                 );
               } else if (viewModel.name == '') {
                 return const Center(
                   child: Text(
                     'Please select a character from the list to the left.',
-                    style: TextStyle(fontSize: 20), // Style as needed
+                    style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
                 );

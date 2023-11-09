@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_code_practical/screens/home.dart';
 import 'package:flutter_code_practical/view_models/character_view_model.dart';
 import 'package:flutter_code_practical/view_models/character_info_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart'; // You need to add google_fonts in your pubspec.yaml
+import 'package:google_fonts/google_fonts.dart';
 
 class MyApp extends StatelessWidget {
   final String flavor;
@@ -49,26 +48,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isTablet(BuildContext context) {
-      final double deviceDiagonalSize =
-          MediaQuery.of(context).size.shortestSide;
-      return deviceDiagonalSize >= 600;
-    }
-
-    if (isTablet(context)) {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.landscapeLeft,
-      ]);
-    } else {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    }
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

@@ -27,11 +27,9 @@ class CharacterListState extends State<CharacterList> {
 
   void _handleCharacterTap(BuildContext context, String detailsAPI,
       CharacterViewModel viewModel, Character character) {
-    final bool isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
-    final bool isTablet = MediaQuery.of(context).size.width > 600;
+    final bool isTablet = MediaQuery.of(context).size.shortestSide > 600;
 
-    if (isLandscape || isTablet) {
+    if (isTablet) {
       viewModel.updateSelectedCharacter(character);
       widget.onSelectCharacter(detailsAPI);
     } else {

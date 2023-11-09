@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code_practical/widgets/character_list.dart';
-import 'package:flutter_code_practical/widgets/character_info.dart'; // Don't forget to import CharacterInfo
+import 'package:flutter_code_practical/widgets/character_info.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.title}) : super(key: key);
@@ -19,13 +19,10 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Helper method to determine if the screen width is that of a tablet.
   bool isTabletWidth(BuildContext context) {
-    // 600dp is a common breakpoint for a typical tablet width screen.
-    const tabletBreakpoint = 600;
-    // MediaQuery.of(context) will provide the screen size
-    double deviceWidth = MediaQuery.of(context).size.width;
-    return deviceWidth > tabletBreakpoint;
+    double deviceWidth = MediaQuery.of(context).size.shortestSide;
+
+    return deviceWidth > 600;
   }
 
   @override
@@ -34,11 +31,7 @@ class HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: Text(widget.title)),
       body: OrientationBuilder(
         builder: (context, orientation) {
-          // Check for landscape orientation or tablet width.
-          bool isTabletOrLandscape =
-              orientation == Orientation.landscape || isTabletWidth(context);
-
-          if (isTabletOrLandscape) {
+          if (isTabletWidth(context)) {
             return Row(
               children: <Widget>[
                 ConstrainedBox(
