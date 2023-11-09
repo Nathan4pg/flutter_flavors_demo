@@ -6,8 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_code_practical/view_models/character_info_view_model.dart';
 import 'package:flutter_code_practical/widgets/character_info.dart';
-
-import 'character_info_test.mocks.dart'; // Use the actual generated file name
+import 'character_info_test.mocks.dart';
 
 @GenerateMocks([CharacterInfoViewModel])
 void main() {
@@ -34,7 +33,6 @@ void main() {
     testWidgets('Initial loading state UI', (WidgetTester tester) async {
       await buildCharacterInfoWidget(tester);
 
-      // Verify if CircularProgressIndicator is shown initially
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
@@ -51,10 +49,7 @@ void main() {
       expect(find.text('Character Name'), findsOneWidget);
       expect(find.text('Short Description'), findsOneWidget);
       expect(find.text('Full Description'), findsOneWidget);
-      expect(
-          find.byType(CharacterImage), findsOneWidget); // Corrected this line
+      expect(find.byType(CharacterImage), findsOneWidget);
     });
-
-    // ... additional tests
   });
 }

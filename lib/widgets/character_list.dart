@@ -3,11 +3,11 @@ import 'package:flutter_code_practical/models/character.dart';
 import 'package:flutter_code_practical/view_models/character_view_model.dart';
 import 'package:flutter_code_practical/view_models/character_info_view_model.dart';
 import 'package:flutter_code_practical/widgets/character_info.dart';
+import 'package:flutter_code_practical/widgets/loading_skeleton.dart';
 import 'package:provider/provider.dart';
 
 class CharacterList extends StatefulWidget {
-  final ValueChanged<String?>
-      onSelectCharacter; // Callback function to handle character selection
+  final ValueChanged<String?> onSelectCharacter;
 
   const CharacterList({Key? key, required this.onSelectCharacter})
       : super(key: key);
@@ -32,11 +32,9 @@ class CharacterListState extends State<CharacterList> {
     final bool isTablet = MediaQuery.of(context).size.width > 600;
 
     if (isLandscape || isTablet) {
-      // If in landscape mode, use the callback to inform the parent widget
       viewModel.updateSelectedCharacter(character);
       widget.onSelectCharacter(detailsAPI);
     } else {
-      // If not, navigate to the character info page as before
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider<CharacterInfoViewModel>(
@@ -51,14 +49,35 @@ class CharacterListState extends State<CharacterList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CharacterViewModel>(builder: (context, viewModel, child) {
+      // generate skeleton loading components
+      int count = 0;
+      List<Map<String, dynamic>> loadingItems = [
+        {
+          'type': 'square',
+          'width': '100%',
+          'height': 50,
+          'margin': [0, 10, 0, 30]
+        }
+      ];
+
+      while (count < 10) {
+        loadingItems.add({
+          'type': 'square',
+          'width': '100%',
+          'height': 30,
+          'margin': [0, 0, 0, 30]
+        });
+        count++;
+      }
+
       if (viewModel.isLoading) {
-        // If the view model indicates that we're loading data, show a loading indicator
-        return const Center(child: CircularProgressIndicator());
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: LoadingSkeleton(items: loadingItems),
+        );
       } else if (viewModel.filteredCharacters.isEmpty) {
-        // Optionally handle the case where there are no characters
         return const Center(child: Text('No characters found.'));
       } else {
-        // Otherwise, display the list of characters
         return Column(
           children: [
             Padding(
@@ -93,11 +112,13 @@ class CharacterListState extends State<CharacterList> {
                     title: Text(character.name),
                     onTap: () => _handleCharacterTap(
                         context, character.detailsApi, viewModel, character),
-                    tileColor: viewModel.selectedCharacter?.name ==
-                            character.name
-                        ? Theme.of(context).colorScheme.secondary.withOpacity(
-                            0.3) // for example, blue with some transparency
-                        : null, // default color
+                    tileColor:
+                        viewModel.selectedCharacter?.name == character.name
+                            ? Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.3)
+                            : null, // default color
                   );
                 },
               ),

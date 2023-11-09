@@ -50,15 +50,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isTablet(BuildContext context) {
-      // Logic to determine if the device is a tablet. You might consider using more sophisticated
-      // logic depending on your needs.
       final double deviceDiagonalSize =
           MediaQuery.of(context).size.shortestSide;
       return deviceDiagonalSize >= 600;
     }
 
     if (isTablet(context)) {
-      // Is tablet, allow all orientations.
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
@@ -66,7 +63,6 @@ class MyApp extends StatelessWidget {
         DeviceOrientation.landscapeLeft,
       ]);
     } else {
-      // Is phone, lock to portrait mode.
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,

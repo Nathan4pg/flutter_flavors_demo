@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code_practical/view_models/character_info_view_model.dart';
 import 'package:flutter_code_practical/widgets/character_image.dart';
+import 'package:flutter_code_practical/widgets/loading_skeleton.dart';
 import 'package:provider/provider.dart';
 
 class CharacterInfo extends StatefulWidget {
@@ -38,6 +39,32 @@ class CharacterInfoState extends State<CharacterInfo> {
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> loadingItems = [
+      // character name
+      {
+        'type': 'square',
+        'width': '100%',
+        'height': 50,
+        'margin': [0, 8, 0, 16]
+      },
+      // character image
+      {
+        'type': 'square',
+        'width': 400,
+        'height': 400,
+        'margin': [0, 0, 0, 24]
+      },
+      // description
+      {
+        'type': 'square',
+        'width': '100%',
+        'height': 300,
+        'margin': [0, 0, 0, 40]
+      }
+    ];
+
+    const double setMaxWidth = 400;
+
     return OrientationBuilder(
       builder: (context, orientation) {
         return Scaffold(
@@ -50,7 +77,12 @@ class CharacterInfoState extends State<CharacterInfo> {
           body: Consumer<CharacterInfoViewModel>(
             builder: (context, viewModel, child) {
               if (_isLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+                    child: LoadingSkeleton(items: loadingItems),
+                  ),
+                );
               } else if (viewModel.name == '') {
                 return const Center(
                   child: Text(
@@ -62,64 +94,58 @@ class CharacterInfoState extends State<CharacterInfo> {
               }
 
               return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
-                  child: widget.detailsAPI == ''
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 400),
+                child: widget.detailsAPI == ''
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Center(
+                        child: ConstrainedBox(
+                          constraints:
+                              const BoxConstraints(maxWidth: setMaxWidth),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   viewModel.name,
                                   style: const TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 32,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  viewModel.shortDescription,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 24),
+                                const SizedBox(height: 16),
                                 LayoutBuilder(
                                   builder: (BuildContext context,
                                       BoxConstraints constraints) {
                                     // Calculate the width to use
-                                    double imgWidth = constraints.maxWidth < 400
-                                        ? constraints.maxWidth
-                                        : 400;
+                                    double imgWidth =
+                                        constraints.maxWidth < setMaxWidth
+                                            ? constraints.maxWidth
+                                            : setMaxWidth;
 
                                     return Center(
                                         child: CharacterImage(
                                       imageUrl: viewModel.imageUrl,
                                       imgWidth: imgWidth,
+                                      defaultHeight: setMaxWidth,
                                     ));
                                   },
                                 ),
-                                const SizedBox(height: 32),
-                                Text(
-                                  'Description',
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
-                                  textAlign: TextAlign.left,
-                                ),
                                 const SizedBox(height: 24),
                                 ConstrainedBox(
-                                  constraints:
-                                      const BoxConstraints(maxWidth: 400),
-                                  child: Text(viewModel.description),
+                                  constraints: const BoxConstraints(
+                                      maxWidth: setMaxWidth),
+                                  child: Text(
+                                    viewModel.description,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
                                 ),
+                                const SizedBox(height: 40),
                               ],
                             ),
                           ),
                         ),
-                ),
+                      ),
               );
             },
           ),

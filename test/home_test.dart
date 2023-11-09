@@ -24,7 +24,6 @@ void main() {
       );
     }
 
-    // Test 1: Ensure everything is created as expected
     testWidgets('Renders correctly in both portrait and landscape',
         (WidgetTester tester) async {
       const String testTitle = 'Test Home';
@@ -32,19 +31,16 @@ void main() {
       await tester.pumpWidget(makeTestableWidget(
           child: const MaterialApp(home: HomeScreen(title: testTitle))));
 
-      // AppBar widget with the testTitle title.
       expect(find.widgetWithText(AppBar, testTitle), findsOneWidget);
 
       await tester.binding.setSurfaceSize(const Size(1200, 800)); // landscape
       await tester.pump();
 
-      // In landscape mode, Row exists
       expect(find.byType(Row), findsOneWidget);
 
       await tester.binding.setSurfaceSize(null);
     });
 
-    // Test 2: Test the handleCharacterSelection function
     testWidgets('handleCharacterSelection updates the state',
         (WidgetTester tester) async {
       // Initialize the HomeScreen
@@ -56,18 +52,11 @@ void main() {
       final homeScreenState =
           tester.state(find.byWidget(homeScreen)) as HomeScreenState;
 
-      print('home screen state: $homeScreenState');
-
-      // Call handleCharacterSelection and pass a sample API
       homeScreenState.handleCharacterSelection("test_api");
 
-      // Rebuild the widget after the state change.
       await tester.pump();
 
-      // Expect the selectedCharacterDetailsApi to be updated
       expect(homeScreenState.selectedCharacterDetailsApi, "test_api");
     });
-
-    // You can add more tests below for different functionalities.
   });
 }
